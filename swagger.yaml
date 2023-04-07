@@ -1,0 +1,557 @@
+openapi: "3.0.0"
+info:
+  title: Tshirt store api
+  description: LCO - a course to create api for Ecomm store
+  version: 1.0.0
+  contact:
+    email: skr524@outlook.com
+    url: "http/shreedharma.dev"
+
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}"
+    description: Internal staging server for testing
+    variables:
+      version:
+        enum:
+          - v1
+          - v2
+        default: v1
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+
+components:
+  securitySchemes:
+    CookieAuth:
+      type: apikey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /dummy:
+    get:
+      tags:
+        - Home
+      summary: returns a greet message from backend
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "mystring"
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /signup:
+    post:
+      tags:
+        - User
+      summary: Signing up an user
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+                  token:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /signin:
+    post:
+      tags:
+        - User
+      summary: Signing in an user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+                  token:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /singout:
+    get:
+      tags:
+        - User
+      summary: Signing out an user
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /forgotpassword:
+    post:
+      tags:
+        - User
+      summary: sending forgot password token to user registered email
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /password/reset/{forgotToken}:
+    post:
+      tags:
+        - User
+      summary: To validate user and letting them change their password
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+                  token:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /userdashboard:
+    get:
+      tags:
+        - User
+      summary: validate users and allow them to access user dashboard
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /password/update:
+    post:
+      tags:
+        - User
+      summary: Allows signed in user to update their password by providing their old password
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+                  token:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /userdashboard/update:
+    post:
+      tags:
+        - User
+      summary: Allows signed in user to update their details excluding password
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Gets all users information
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  users:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                          photo:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              secure_url:
+                                type: string
+                          _id:
+                            type: string
+                          createdAt:
+                            type: string
+                          __v:
+                            type: number
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /admin/user/{id}:
+    put:
+      tags:
+        - Admin
+      summary: Edits details of a user
+      parameters:
+        - name: id
+          in: path
+          default: thisdefaultiddoesnotwork
+          required:
+          schema:
+            type: string
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                role:
+                  type: string
+                  enum: [User, Manager, Admin]
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+  /admin/user/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Gets details of a user
+      parameters:
+        - name: id
+          in: path
+          default: thisdefaultiddoesnotwork
+          required:
+          schema:
+            type: string
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+                      __v:
+                        type: number
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+  
+  /admin/user/{id}:
+    delete:
+      tags:
+        - Admin
+      summary: deletes a user
+      parameters:
+        - name: id
+          in: path
+          default: thisdefaultiddoesnotwork
+          required:
+          schema:
+            type: string
+      responses:
+        200:
+          description: all good success
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
